@@ -1,0 +1,31 @@
+{% extends "base.html" %} 
+{% from 'macros/search.html' import search_item %}
+
+{% block content %}
+<div class="container" id="search-container">
+  <div class="row my-2">
+    <div class="col">
+      <form method='POST'>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <div class="input-group mb-3">
+          <input name='query' type="text" class="form-control" placeholder="Name, artist, album to search" aria-label="Keywords to search" aria-describedby="button-addon1">
+          <div class="input-group-append">
+            <button class="btn btn-success" type="submit" id="search-btn">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% if results %}
+<div class="container" id="search-result-container">
+    {% for result in results %}
+      {{ search_item(result) }}
+    {% endfor %}
+</div>
+{% endif %}
+
+
+{% endblock content %}
