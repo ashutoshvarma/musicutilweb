@@ -5,8 +5,6 @@ from flask import (
     Blueprint, g, render_template, request, session, url_for
 )
 
-import musicutil 
-
 
 bp = Blueprint('search', __name__)
 
