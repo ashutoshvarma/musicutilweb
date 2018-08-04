@@ -30,11 +30,10 @@ def create_app(config_name):
     try:
         from main import search
     except ModuleNotFoundError:
-        from musicutilweb.main import search
+        from musicutilweb.main import search , download
 
     app.register_blueprint(search.bp)
+    app.register_blueprint(download.bp)
     app.add_url_rule('/', endpoint='index')         #url_for('index) and url_for('search.index) will point same view.
-
-    
 
     return app
