@@ -22,7 +22,7 @@
 {% if results %}
 <div class="container" id="search-result-container">
     {% for result in results %}
-      {{ search_item(result) }}
+      {{ search_item(result, loop.index) }}
     {% endfor %}
 </div>
 {% endif %}

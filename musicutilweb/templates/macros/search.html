@@ -1,38 +1,47 @@
-{% macro search_item(item) -%}
+{% macro search_item(item, index) -%}
 
-<div class="row">
-    <div class="col d-flex">
+<div class="card" id=item{{index}} source="{{item[2]}}" status="None">
+    <div class="card-header flex-column align-items-start p-0 " id="item{{index}}head">
+        <a data-toggle="collapse" data-target="#item{{index}}collapse" class="list-group-item list-group-item-action flex-column align-items-start" id="item{{index}}headlink">
 
-        <div class="card flex-row  flex-fill">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{item[0]}}</h5>
+                <small class="text-muted">3 days ago</small>
+            </div>
+            <small class="text-muted">{{item[1]}}</small>
+        </a>
+    </div>
 
-            <!-- Song Info -->
-            <div class="card-body  ">
-                <a href="{{ item[2] }}">
-                    <h6 class="card-title">{{item[0]}}</h6>
-                    <small>{{item[1]}}</small>
-                </a>
+    <div id="item{{index}}collapse" class="collapse hide wrapper" aria-labelledby="item{{index}}head" search>
+
+        <div class="card-body row d-flex justify-content-between flex-grow-1" id="item{{index}}collapsebody">      
+
+            <div class="overlay" spinner id="item{{index}}spinner">
+                <span>
+                    <div class="lds-roller ">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </span>
             </div>
 
-            <!-- Download Button -->
-            <div class="btn-group ">
-                <button type="button" class="btn btn-danger btn-sm">Download</button>
-                <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split btn-sm" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                    <span class="sr-only">More Options</span>
-                </button>
-                <div class="dropdown-menu">
-                    <button class="dropdown-item" href="#">FLAC</button>
-                    <a class="dropdown-item" href="#">MP3-500</a>
-                    <a class="dropdown-item" href="#">MP3-320</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Mobile Download</a>
+            <div class="overlay " error id="item{{index}}error">
+                <div class="d-flex flex-column ">
+                    <small id="errorSpan{{index}}"></small>
+                    <p id="errorP{{index}}" 
+                    ></p>
                 </div>
             </div>
 
         </div>
 
     </div>
-
 </div>
 
 {%- endmacro %}

@@ -24,9 +24,6 @@ def create_app(config_name):
         pass
 
 
-    csrf.init_app(app)
-
-
     try:
         from main import search
     except ModuleNotFoundError:
@@ -35,5 +32,9 @@ def create_app(config_name):
     app.register_blueprint(search.bp)
     app.register_blueprint(download.bp)
     app.add_url_rule('/', endpoint='index')         #url_for('index) and url_for('search.index) will point same view.
+
+    csrf.init_app(app)
+    csrf.exempt(download.bp)
+
 
     return app
