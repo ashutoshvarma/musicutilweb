@@ -14,8 +14,10 @@
 
     <div id="item{{index}}collapse" class="collapse hide wrapper" aria-labelledby="item{{index}}head" search>
 
-        <div class="card-body row d-flex justify-content-between flex-grow-1" id="item{{index}}collapsebody">      
-
+        <div class="card-body row d-flex justify-content-between flex-grow-1" id="item{{index}}collapsebody">    
+            <!-- Hotfix for low collapse height   -->
+            <span style="min-height: 35px"></span>  
+            
             <div class="overlay" spinner id="item{{index}}spinner">
                 <span>
                     <div class="lds-roller ">

@@ -53,23 +53,29 @@ function onErrorDownloadJson(textStatus, errorThrown, metaData) {
     var error = $("#" + metaData.errorId);
     var spinner = $("#" + metaData.spinnerId);
 
-    error.find("small").text = textStatus;
-    error.find("p").text = errorThrown;
-
+    error.find("small").text(textStatus.statusText);
+    error.find("p").text(errorThrown);
+    
     error.css({ 'opacity': 1 });
     spinner.css({ 'opacity': 0 });
 
 }
 
 function afterDownloadJson(metaData) {
+    // var spinner = $("#" + metaData.spinnerId);
+    // var error = $("#" + metaData.errorId);
+
+    // spinner.css({ 'opacity': 0 });
+    // error.css({ 'opacity': 0 });
+}
+
+function sucessDownloadJson(data, metaData) {
+
     var spinner = $("#" + metaData.spinnerId);
     var error = $("#" + metaData.errorId);
 
     spinner.css({ 'opacity': 0 });
     error.css({ 'opacity': 0 });
-}
-
-function sucessDownloadJson(data, metaData) {
 
     var itembody = $("#" + metaData.itembodyId);
     var item = $("#" + metaData.itemId);
@@ -95,14 +101,17 @@ function sucessDownloadJson(data, metaData) {
 $(".collapse[search]").on('show.bs.collapse', function () {
 
     var collapse_id = $(this).attr("id");
-    var spinner_id = collapse_id + "spinner";
-    var error_id = collapse_id + "error";
+    var item_id = collapse_id.substring(0, collapse_id.length - 8);
+
+    var spinner_id = item_id + "spinner";
+    var error_id = item_id + "error";
     var itembody_id = collapse_id + "body";
 
-    var item_id = collapse_id.substring(0, collapse_id.length - 8);
+    
     var item_headlink_id = item_id + "headlink";
 
     var searchItem = $("#" + item_id);
+
 
 
     var metaData = {
