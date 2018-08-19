@@ -11,7 +11,7 @@ idna==2.7
 itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
--e git+git@github.com:ashutoshvarma/music-util.git@e0eb977c2379ffe933e5822d8fa1e8da1fa9423a#egg=musicutil
+-e git+git@github.com:ashutoshvarma/music-util.git@2af1dbeabd39041422711dc6f7aae08c8b77ed77#egg=musicutil
 requests==2.19.1
 six==1.11.0
 spotipy==2.4.4
@@ -19,4 +19,3 @@ urllib3==1.23
 webencodings==0.5.1
 Werkzeug==0.14.1
 WTForms==2.2.1
-yapf==0.22.0
