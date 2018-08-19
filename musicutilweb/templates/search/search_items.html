@@ -1,0 +1,7 @@
+{% from 'macros/search.html' import search_item %}
+
+{% for item in results %}
+
+{{ search_item(item, loop.index) }}
+
+{% endfor %}

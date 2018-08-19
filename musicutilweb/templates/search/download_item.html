@@ -1,0 +1,7 @@
+{% from 'macros/download.html' import download_button %}
+
+{% for item in data %}
+
+{{download_button(item, parentId, loop.index)}}
+
+{% endfor %}

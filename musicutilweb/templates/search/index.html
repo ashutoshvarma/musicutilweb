@@ -2,30 +2,61 @@
 {% from 'macros/search.html' import search_item %}
 
 {% block content %}
-<div class="container" id="search-container">
+<div class="container" id="search-box-container">
   <div class="row my-2">
     <div class="col">
-      <form method='POST'>
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <div class="input-group mb-3">
-          <input name='query' type="text" class="form-control" placeholder="Name, artist, album to search" aria-label="Keywords to search" aria-describedby="button-addon1">
-          <div class="input-group-append">
-            <button class="btn btn-success" type="submit" id="search-btn">Search</button>
-          </div>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <div class="input-group mb-3">
+        <input id="search-box" name='query' type="text" class="form-control" placeholder="Name, artist, album to search" aria-label="Keywords to search" aria-describedby="button-addon1">
+        <div class="input-group-append">
+          <button class="btn btn-success" type="submit" id="search-btn">Search</button>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>
 
 
-{% if results %}
-<div class="container" id="search-result-container">
-    {% for result in results %}
-      {{ search_item(result, loop.index) }}
-    {% endfor %}
+
+<div class="container " id="search-result-container">
+  
+
+    <div class="overlay" >
+      <span id="search-spinner">
+        <div class="lds-roller ">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </span>
+    </div>
+
+    <!-- <span class="overlay " error id="search-error" style="position: inherit;">
+      <div class="d-flex flex-column ">
+        <small id="search-error-small"></small>
+        <p id="search-error-p"></p>
+      </div>
+    </span> -->
+
+
+    <div class="alert alert-danger alert-dismissible fade show " role="alert" id="search-error" style="display:none;">
+      <h6 id="search-error-small">API ERROR</h6>
+      <strong id="search-error-p">"query" is required parameter</strong>
+      <button type="button" class="close" aria-label="Close" onclick="$('#search-error').css({ 'display':'none' })">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+
+    
+  
+  <div id="search-container"></div>
 </div>
-{% endif %}
+
 
 
 {% endblock content %}
