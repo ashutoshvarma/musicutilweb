@@ -78,7 +78,7 @@ function onErrorAjaxJson(textStatus, errorThrown, metaData, jqXHR) {
 
     try {
         errorJSON = JSON.parse(jqXHR.responseText);
-        errors(true, metaData.errorId, errorJSON.errorName, errorJSON.error);
+        errors(true, metaData.errorId, errorJSON.error, errorJSON.message);
     } catch (err) {
         errors(true, metaData.errorId);
     }

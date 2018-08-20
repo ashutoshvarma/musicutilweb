@@ -1,6 +1,7 @@
 import musicutil
 from ..utils import error
 
+
 from flask import (Blueprint, g, render_template, request, session, url_for,
                    abort, Response, jsonify, app, redirect)
 
@@ -30,10 +31,9 @@ def api_search():
                     results = g.music.search(query.strip(), max, True)
                 resp = jsonify(results)
             else:
-                resp = error.api_invalid('search',
-                                      '"query" is required parameter')
+                raise error.API.ParameterRequired("query")
         except KeyError:
-            resp = error.source_not_found('download', src_name)
+            raise error.API.SourceNotFound(src_name)
 
     return resp
 
@@ -58,15 +58,14 @@ def api_download():
                         d_data = {'data': render_template('search/download_item.html', data=d_data, parentId=parent_id)}
                         resp = jsonify(d_data)
                     else:
-                        resp = error.api_invalid('download', '"parentId" parameter is required')                        
+                        raise error.API.ParameterRequired("parentId")                  
                 else:
                     d_data = g.music.download_details(song_url, True)
                     resp = jsonify(d_data)
             else:
-                resp = error.api_invalid('download',
-                                      '"url" parameter is required')
+                raise error.API.ParameterRequired("url")
         except KeyError:
-            resp = error.source_not_found('download', src_name)
+            raise error.API.SourceNotFound(src_name)
 
     return resp
 
@@ -93,11 +92,16 @@ def api_song_details():
                     song_data = g.music.song_info(song_url, True)
                 resp = jsonify(song_data)
             else:
-                resp = error.api_invalid('song', '"url" parameter is required')
+                raise error.API.ParameterRequired("url")
         except KeyError:
-            resp = error.api_invalid(
-                    'song',
-                    'Given music source [{}] not supported yet.'.format(
-                        src_name))
+            raise error.API.SourceNotFound(src_name)
 
     return resp
+
+
+
+@bp.errorhandler(error.API.InvalidUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
