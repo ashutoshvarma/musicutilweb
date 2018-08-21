@@ -5,42 +5,41 @@
         <a data-toggle="collapse" data-target="#item{{index}}collapse" class="list-group-item list-group-item-action flex-column align-items-start" id="item{{index}}headlink">
 
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{item[0]}}</h5>
+                <h5 class="mb-1" id="item{{index}}song">{{item[0]}}</h5>
                 <small class="text-muted">chiasenhac.vn</small>
             </div>
-            <small class="text-muted">{{item[1]}}</small>
+            <small class="text-muted" id="item{{index}}artist">{{item[1]}}</small>
         </a>
     </div>
 
     <div id="item{{index}}collapse" class="collapse hide wrapper" aria-labelledby="item{{index}}head" search>
 
-        <div class="card-body row d-flex justify-content-between flex-grow-1" id="item{{index}}collapsebody">    
-            <!-- Hotfix for low collapse height   -->
-            <span style="min-height: 35px"></span>  
-            
-            <div class="overlay" spinner  >
-                <span id="item{{index}}spinner">
-                    <div class="lds-roller ">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+            <div class="card-body flex-column d-flex justify-content-between p-0"  style="display: none;">
+                    <!-- Hotfix for low collapse height   -->
+
+
+                    <div class="d-flex justify-content-center p-2">
+                        <button id="item{{index}}info-btn" class="btn btn-outline-dark  btn-block" data-toggle="modal" data-target="#song-modal">Song info</button>
                     </div>
-                </span>
-            </div>
+                    
 
-            <div class="overlay " error id="item{{index}}error">
-                <div class="d-flex flex-column ">
-                    <strong id="item{{index}}error-name"></strong>
-                    <small id="item{{index}}error-body"></small>
+                    <div class="wrapper d-flex flex-wrap justify-content-between flex-grow-1 " id="item{{index}}collapsebody">
+                        <span style="min-height: 50px"></span>
+                        <div class="overlay" spinner="">
+                            <span id="item{{index}}spinner" style="display: none; z-index: -1;">
+                                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                            </span>
+                        </div>
+
+                        <div class="overlay p-1 alert alert-danger alert-dismissible fade show" error="" id="item{{index}}error" style="display: none;">
+                            <div class="d-flex flex-column ">
+                                <strong id="item{{index}}error-name"></strong>
+                                <small id="item{{index}}error-body"></small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-        </div>
 
     </div>
 </div>

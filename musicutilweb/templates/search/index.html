@@ -23,25 +23,9 @@
 
     <div class="overlay" >
       <span id="search-spinner">
-        <div class="lds-roller ">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+        <div class="lds-hourglass"></div>
       </span>
     </div>
-
-    <!-- <span class="overlay " error id="search-error" style="position: inherit;">
-      <div class="d-flex flex-column ">
-        <small id="search-error-small"></small>
-        <p id="search-error-p"></p>
-      </div>
-    </span> -->
 
 
     <div class="alert alert-danger alert-dismissible fade show pb-2" role="alert" id="search-error" style="display: none;">
@@ -53,8 +37,11 @@
     </div>
 
     
-  
+
   <div id="search-container"></div>
+
+  {% include 'components/song_modal.html' %}
+
 </div>
 
 

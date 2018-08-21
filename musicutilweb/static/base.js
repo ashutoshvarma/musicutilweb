@@ -45,7 +45,7 @@ function errors(toggle, errorId, errorNameId = "search-error-name", errorBodyId 
 
 //Ajax Handling functions
 function asyncAjaxJSON(payload, target, method, before, complete, sucess, error, metaData) {
-    log('AJAX[%s] request to %s with payload %o', method, target, payload);
+    log('AJAX[%s] request to %s with payload %o and metaData %o', method, target, payload, metaData);
     $.ajax({
         url: target,
         type: method,
@@ -98,6 +98,7 @@ function afterAjaxJson(metaData) {
 
 
 function enableCollapseListener() {
+    log("Collapse Lister Enabled.")
     $(".collapse[search]").on('show.bs.collapse', function () {
 
         var collapse_id = $(this).attr("id");
@@ -134,6 +135,53 @@ function enableCollapseListener() {
 }
 
 
+function enableModalListener() {
+    log('Modal Listener enabled')
+
+    $('[data-target="#song-modal"]').click(function () {
+        log('SongInfo Modal data-toggle clicked.')
+
+        var idPrefix = "info-btn";
+
+        itemId = this.id.substring(0, this.id.length - idPrefix.length);
+        item = $('#' + itemId);
+
+
+
+        metaData = {
+            url: item.attr('source'),
+            artist: $("#" + itemId + "artist").innerHTML,
+            song: $("#" + itemId + "song").innerHTML,
+
+            errorId: "song-modal-body-error",
+            errorNameId: "song-modal-body-error-name",
+            errorBodyId: "song-modal-body-error-body",
+
+            spinnerId: "song-modal-body-spinner",
+
+            searchBoxId: "search-box",
+            parentId: "song-modal-body-content",
+
+            albumTagId: "song-modal-body-content-album",
+            yearTagId: "song-modal-body-content-year",
+            lyricsBoxId: "song-modal-body-content-lyrics",
+
+            songTagId: "song-modal-header-song",
+            artistTagId: "song-modal-header-artist"
+        };
+
+        clearSongModal(metaData);
+
+        $("#" + metaData.songTagId).html(metaData.song);
+        $("#" + metaData.artistTagId).html(metaData.artist);
+        $("#song-modal-footer-link").attr('href', metaData.url);
+
+        ayncSongInfo(beforeAjaxJson, afterAjaxJson, sucessSongInfoJSON, onErrorAjaxJson, metaData);
+
+    });
+}
+
+
 
 function asyncSearch(q, max, before, after, sucess, error, metaData) {
     var data = {
@@ -143,13 +191,14 @@ function asyncSearch(q, max, before, after, sucess, error, metaData) {
         max: max
     };
 
-    log("asyncSearch with payload:%o and metaData:%o", data, metaData);
-
     asyncAjaxJSON(data, "api/search", 'POST', before, after, sucess, error, metaData);
 }
 
 
 function sucessSearchJson(data, metaData) {
+
+    log("sucessSearchJson with recieved data:%o and metaData:%o", data, metaData)
+
     spinners(false, metaData.spinnerId);
     errors(false, metaData.errorId);
 
@@ -159,6 +208,7 @@ function sucessSearchJson(data, metaData) {
     var parentId = $("#" + metaData.parentId);
     parentId.html(data.data);
     enableCollapseListener();
+    enableModalListener();
 }
 
 
@@ -179,6 +229,8 @@ function getDownloadButtonCol(name, id) {
 }
 
 function sucessDownloadJson(data, metaData) {
+
+    log("sucessDownloadJson with recieved data:%o and metaData:%o", data, metaData)
 
     spinners(false, metaData.spinnerId);
     errors(false, metaData.errorId);
@@ -202,11 +254,57 @@ function sucessDownloadJson(data, metaData) {
 }
 
 
+function ayncSongInfo(before, after, sucess, error, metaData) {
+    payload = {
+        url: metaData.url,
+        source: "default",
+    }
+    asyncAjaxJSON(payload, "api/song", 'POST', before, after, sucess, error, metaData);
+}
+
+function sucessSongInfoJSON(data, metaData) {
+    log("sucessSongInfoJSON with recieved data:%o and metaData:%o", data, metaData)
+
+
+    $("#" + metaData.albumTagId).html(data.album);
+    $("#" + metaData.yearTagId).html(data.year);
+
+    $("#" + metaData.songTagId).html(data.name);
+    $("#" + metaData.artistTagId).html(data.artist);
+
+    var lyricsTag = $("#" + metaData.lyricsBoxId);
+
+    data.lyrics.forEach(function (item, index, array) {
+        lyricsTag.append(item + "\n");
+    });
+
+
+
+    spinners(false, metaData.spinnerId);
+    errors(false, metaData.errorId);
+
+    toggleDOM(metaData.parentId, true);
+
+}
+
+function clearSongModal(metaData) {
+    nil = ""
+    $("#" + metaData.albumTagId).html(nil);
+    $("#" + metaData.yearTagId).html(nil);
+    $("#" + metaData.lyricsBoxId).html(nil);
+    $("#" + metaData.songTagId).html(nil);
+    $("#" + metaData.artistTagId).html(nil);
+
+    $("#song-modal-footer-link").attr('href', "#");
+}
+
 
 
 
 
 $("#search-btn").click(function () {
+    log("'search-btn' clicked.")
+
     metaData = {
         spinnerId: "search-spinner",
 
@@ -218,8 +316,12 @@ $("#search-btn").click(function () {
         parentId: "search-container"
     };
     var searchBox = $("#search-box");
-    //alert(searchBox.val())
 
     asyncSearch(searchBox.val(), 10, beforeAjaxJson, afterAjaxJson, sucessSearchJson, onErrorAjaxJson, metaData);
 
 });
+
+
+
+
+
