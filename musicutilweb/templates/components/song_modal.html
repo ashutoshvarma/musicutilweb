@@ -1,0 +1,68 @@
+<!-- SongInfo Modal -->
+<div class="modal fade" id="song-modal" tabindex="-1" role="dialog" aria-labelledby="SongInfoModal" aria-hidden="true" data-backdrop="static"
+    data-keyboard="false">
+    <div class="modal-dialog modal-lg " role="document">
+        <div class="modal-content">
+            <!--Modal Header -->
+            <div class="modal-header" id="song-modal-header">
+                <div class="d-flex" id="song-modal-header-content">
+                    <div class="d-flex w-100 flex-column">
+                        <h5 class="mb-1" id="song-modal-header-song"></h5>
+                        <small class="text-muted" id="song-modal-header-artist"></small>
+                    </div>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body d-flex flex-column">
+
+                <div class="overlay" spinner>
+                    <span id="song-modal-body-spinner" style="display: none; z-index: -1;">
+                            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                    </span>
+                </div>
+
+                <div class=" alert alert-danger alert-dismissible fade show mb-4" id="song-modal-body-error" style="display: none;">
+                    <div class="d-flex flex-column ">
+                        <strong id="song-modal-body-error-name"></strong>
+                        <small id="song-modal-body-error-body"></small>
+                    </div>
+                    <button type="button" class="close" aria-label="Close" onclick="$('#song-modal-body-error').css({ 'display':'none' })">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+
+                <div class="d-flex flex-column flex-fill " id="song-modal-body-content">
+                    <div class="d-flex  flex-wrap  mb-2" id="song-modal-body-content-songinfo">
+                        <div class="d-flex flex-column mr-2 w-75">
+                            <strong>Album:&nbsp;</strong>
+                            <p class="lead wordwrap" id="song-modal-body-content-album"></p>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <strong>Year: &nbsp;</strong>
+                            <span class="badge badge-secondary lead" style="font-size: 100%;" id="song-modal-body-content-year"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex  flex-column flex-grow-1">
+                        <strong class="d-flex">Lyrics:-</strong>
+                        <textarea readonly class="form-control flex-fill d-flex" id="song-modal-body-content-lyrics"></textarea>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer d-flex ">
+                <small>
+                    <a href="#" id="song-modal-footer-link" target="_blank">View in chiasenhac.vn</a>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>

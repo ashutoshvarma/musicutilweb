@@ -16,44 +16,12 @@
 </head>
 
 <body>
-    {%block body %}
+    {% block body %}
 
+    {% block header %}
+    {% include 'components/header.html' %}
+    {% endblock header %} 
 
-    <header>
-        <div class="collapse success-color-dark" id="navbarHeader">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-8 col-md-7 py-4">
-                        <h4 class="text-white" >About</h4>
-                        <p class="text-warning" >Search and download songs</p>
-                    </div>
-                    <div class="col-sm-4 offset-md-1 py-4">
-                        <h4 class="text-white">Links</h4>
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="http://chiasenhac.vn/" target="_blank" class="text-white font-weight-light">Vist Source Website </a>
-                            </li>
-                            <li>
-                                <a href="https://github.com/ashutoshvarma/musicutilweb" target="_blank" class="text-white font-weight-light">View Github</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="navbar navbar-dark default-color-dark shadow-sm">
-            <div class="container d-flex justify-content-between">
-                <a href="/" class="navbar-brand d-flex align-items-center">
-                    <img width="20px" height="20px" src="{{ url_for('static', filename='icon.svg') }}">
-                    <strong>&nbsp;MusicUtil</strong>
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-        </div>
-    </header>
 
     {% block content %}
 
@@ -61,16 +29,7 @@
 
 
     {% block footer %}
-   
-    <footer class="footer default-color-dark">
-        <!-- Copyright -->
-        <div class="footer-copyright text-center  text-white d-flex justify-content-center flex-wrap">© 2018 Copyright:
-            <a href="https://github.com/ashutoshvarma/" class="text-light mr-3"> Ashutosh Varma</a>
-            <a  href="http://chiasenhac.vn" target="_blank" class="text-body">Visit Source Site</a>
-        </div>
-        <!-- Copyright -->
-    </footer>
-
+    {% include 'components/footer.html' %}
     {% endblock footer %}
 
 

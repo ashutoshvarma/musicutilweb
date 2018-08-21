@@ -1,20 +1,36 @@
 from flask import jsonify
 
-API_ERROR_ID = 102
+
+class API:
+    class InvalidUsage(Exception):
+        status_code = 400
+        error_name = '[musicutil] - InvalidUsage'
+
+        def __init__(self, message, status_code=None, payload=None):
+            Exception.__init__(self)
+            self.message = message
+            if status_code:
+                self.status_code = status_code
+            self.payload = payload
+
+        def to_dict(self):
+            rv = dict(self.payload or ())
+            rv['message'] = self.message
+            rv['error'] = self.error_name
+            return rv
 
 
-def error(id, error_name, **kargs):
-    json_data = dict(id=id, errorName=error_name)
-    json_data.update(kargs)
-    resp = jsonify(json_data)
-    resp.status_code = 400
-    return resp
+    class ParameterRequired(InvalidUsage):
+        error_name = '[musicutil] - ParameterRequired'
 
+        def __init__(self, parameter=None, status_code=None):
+            message = "{} Required parameter is missing!".format("'{}'".format(parameter) if parameter else "One or more")
+            super().__init__(message,status_code)
 
-def api_invalid(at, msg):
-    return error(API_ERROR_ID, "API ERROR", errorSource=at, error=msg)
+    class SourceNotFound:
+        error_name = '[musicutil] - SourceNotFound'
 
+        def __init__(self, source, status_code=None):
+            message = "Given source [{}] not supported".format(source)
+            super().__init__(message, status_code)
 
-def source_not_found(at, source):
-    return api_invalid(
-        at, 'Given music source [{}] not supported yet.'.format(source))
