@@ -1,3 +1,4 @@
+//Logging functions
 function log(...args) {
     if (window.console && window.console.log) {
         console.log(...args);
@@ -9,6 +10,40 @@ $.fn.log = function (...args) {
     return this;
 }
 
+//DOM manuplating functions
+function toggleDOM(id, toggle, front = false) {
+    var elem = $("#" + id);
+    elem.css({ 'display': toggle ? 'block' : 'none' }).log('Toggle:', toggle);
+    if (front == true) {
+        elem.css({ 'z-index': toggle ? '1' : '-1' }).log('z-index:', toggle);
+    }
+}
+
+
+function spinners(toggle, spinId) {
+    // var spinner = $("#" + spinId);
+    // spinner.css({ 'display': toggle ? 'block' : 'none' });
+    // spinner.css({ 'z-index': toggle ? '1' : '-1' }).log('Toggle:', toggle);
+    toggleDOM(spinId, toggle, true)
+}
+
+
+function errors(toggle, errorId, errorNameId = "search-error-name", errorBodyId = "search-error-body", errorName = "Error", errorBody = "An unknown error occured") {
+    var error = $("#" + errorId);
+    var errorNametag = error.find("#" + errorNameId);
+    var errorBodytag = error.find("#" + errorBodyId);
+
+    errorNametag.html(errorName);
+    errorBodytag.html(errorBody);
+
+    // error.css({ 'display': toggle ? 'block' : 'none' });
+    // error.css({ 'z-index': toggle ? '1' : '-1' }).log('Toggle:', toggle);
+    toggleDOM(errorId, toggle)
+}
+
+
+
+//Ajax Handling functions
 function asyncAjaxJSON(payload, target, method, before, complete, sucess, error, metaData) {
     log('AJAX[%s] request to %s with payload %o', method, target, payload);
     $.ajax({
@@ -32,38 +67,6 @@ function asyncAjaxJSON(payload, target, method, before, complete, sucess, error,
 }
 
 
-function toggleDOM(id, toggle, front = false) {
-    var elem = $("#" + id);
-    elem.css({ 'display': toggle ? 'block' : 'none' }).log('Toggle:', toggle);
-    if (front == true) {
-        elem.css({ 'z-index': toggle ? '1' : '-1' }).log('z-index:', toggle);
-    }
-}
-
-
-function spinners(toggle, spinId) {
-    // var spinner = $("#" + spinId);
-    // spinner.css({ 'display': toggle ? 'block' : 'none' });
-    // spinner.css({ 'z-index': toggle ? '1' : '-1' }).log('Toggle:', toggle);
-    toggleDOM(spinId, toggle, true)
-}
-
-
-function errors(toggle, errorId, errorName = "Error", errorBody = "An unknown error occured", errorNameId = "search-error-small", errorBodyId = "search-error-p") {
-    var error = $("#" + errorId);
-    var errorNametag = error.find("#" + errorNameId);
-    var errorBodytag = error.find("#" + errorBodyId);
-
-    errorNametag.html(errorName);
-    errorBodytag.html(errorBody);
-
-    // error.css({ 'display': toggle ? 'block' : 'none' });
-    // error.css({ 'z-index': toggle ? '1' : '-1' }).log('Toggle:', toggle);
-    toggleDOM(errorId, toggle)
-}
-
-
-
 function beforeAjaxJson(metaData) {
     log('beforAjaxJson with metaData: %o', metaData);
 
@@ -78,9 +81,9 @@ function onErrorAjaxJson(textStatus, errorThrown, metaData, jqXHR) {
 
     try {
         errorJSON = JSON.parse(jqXHR.responseText);
-        errors(true, metaData.errorId, errorJSON.error, errorJSON.message);
+        errors(true, metaData.errorId, metaData.errorNameId, metaData.errorBodyId, errorJSON.error, errorJSON.message);
     } catch (err) {
-        errors(true, metaData.errorId);
+        errors(true, metaData.errorId, metaData.errorNameId, metaData.errorBodyId);
     }
 
     spinners(false, metaData.spinnerId);
@@ -115,7 +118,10 @@ function enableCollapseListener() {
             spinnerId: spinner_id,
             itemId: item_id,
             parentId: itembody_id,
-            errorId: error_id
+
+            errorId: error_id,
+            errorNameId: error_id + "-name",
+            errorBodyId: error_id + "-body",
         };
 
         if (searchItem.attr("status") != "complete") {
@@ -146,7 +152,7 @@ function asyncSearch(q, max, before, after, sucess, error, metaData) {
 function sucessSearchJson(data, metaData) {
     spinners(false, metaData.spinnerId);
     errors(false, metaData.errorId);
-    
+
     toggleDOM(metaData.parentId, true)
 
 
@@ -203,7 +209,11 @@ function sucessDownloadJson(data, metaData) {
 $("#search-btn").click(function () {
     metaData = {
         spinnerId: "search-spinner",
+
         errorId: "search-error",
+        errorNameId: "search-error-name",
+        errorBodyId: "search-error-body",
+
         searchBoxId: "search-box",
         parentId: "search-container"
     };
