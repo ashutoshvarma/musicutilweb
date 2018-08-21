@@ -26,7 +26,7 @@ def api_search():
                     max = musicutil.MusicSource.chiasenhac_vn._MAX_SEARCH
                 if html:
                     results = g.music.search(query.strip(), max, False)
-                    results = {'data': render_template('search/search_items.html', results=results)}
+                    results = {'data': render_template('api_html/search_items.html', results=results)}
                 else:
                     results = g.music.search(query.strip(), max, True)
                 resp = jsonify(results)
@@ -55,7 +55,7 @@ def api_download():
                 if html:
                     if parent_id:
                         d_data = g.music.download_details(song_url, False)
-                        d_data = {'data': render_template('search/download_item.html', data=d_data, parentId=parent_id)}
+                        d_data = {'data': render_template('api_html/download_item.html', data=d_data, parentId=parent_id)}
                         resp = jsonify(d_data)
                     else:
                         raise error.API.ParameterRequired("parentId")                  
